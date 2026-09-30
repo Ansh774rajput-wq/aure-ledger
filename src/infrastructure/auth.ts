@@ -52,7 +52,10 @@ export const PRIVATE_HEADERS = {
 } as const;
 
 export function sameOrigin(request: NextRequest) {
-  const expected = process.env.APP_ORIGIN ?? "http://localhost:3000";
+  const vercelProdOrigin = process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : undefined;
+  const expected = process.env.APP_ORIGIN || vercelProdOrigin || "http://localhost:3000";
   const origin = request.headers.get("origin");
   if (!origin) return false;
 
@@ -60,7 +63,9 @@ export function sameOrigin(request: NextRequest) {
     const eUrl = new URL(expected);
     // In production, require the configured HTTPS origin; local loopback convenience must not expand production trust.
     if (eUrl.protocol === "https:") {
-      return origin === expected;
+      if (origin === expected) return true;
+      if (vercelProdOrigin && origin === vercelProdOrigin) return true;
+      return false;
     }
 
     if (
