@@ -1,0 +1,13 @@
+PostgreSQL availability check: no psql/postgres binaries, no Docker/podman, no DATABASE_URL or TEST_DATABASE_URL.
+Attempted apt-get update && apt-get install -y postgresql.
+Exit 100; actual errors included:
+E: setgroups 65534 failed - setgroups (1: Operation not permitted)
+E: setegid 65534 failed - setegid (22: Invalid argument)
+E: seteuid 42 failed - seteuid (22: Invalid argument)
+E: Method https has died unexpectedly!
+No PostgreSQL substitute was used.
+
+Browser setup: Playwright's normal download returned an invalid/truncated archive.
+A real Chromium 153 executable from the npm-packaged @sparticuz/chromium distribution was used.
+PLAYWRIGHT_CHROMIUM_EXECUTABLE=/tmp/lending-chromium npm run test:e2e
+Temporary browser package was removed by the final npm ci and is not an application dependency.

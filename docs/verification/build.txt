@@ -1,0 +1,7 @@
+Final production build: PASS (also run by the final 12/12 passing browser suite).
+Node: v24.19.0
+Next.js: 16.3.6
+Prisma: 7.10.0
+Compiled successfully; TypeScript passed; static pages generated.
+Routes: /, /_not-found, /api/commands, /api/session, /api/snapshot.
+Dependency reproducibility: npm ci completed successfully from package-lock.json.

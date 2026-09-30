@@ -1,0 +1,14 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> lending@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.2 /workspace/scratch/c4e4d931073c/lending
+
+
+ Test Files  3 passed (3)
+      Tests  73 passed (73)
+   Start at  21:47:00
+   Duration  427ms (tests 41%, import 35%, transform 21%, worker 3%)
+

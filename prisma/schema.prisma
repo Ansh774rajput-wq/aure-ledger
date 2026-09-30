@@ -1,0 +1,186 @@
+generator client {
+ provider = "prisma-client"
+ output = "../src/generated/prisma"
+}
+datasource db {
+ provider = "postgresql"
+}
+model Person {
+ id String @id @default(uuid())
+ name String
+ phone String?
+ createdAt DateTime @default(now())
+ archivedAt DateTime?
+ borrower BorrowerProfile?
+ lender LenderProfile?
+ operations PersonOperation[]
+}
+model BorrowerProfile {
+ id String @id @default(uuid())
+ personId String @unique
+ person Person @relation(fields:[personId],references:[id],onDelete:Restrict)
+ loans Loan[]
+}
+model LenderProfile {
+ id String @id @default(uuid())
+ personId String @unique
+ person Person @relation(fields:[personId],references:[id],onDelete:Restrict)
+ borrowings Borrowing[]
+}
+model Loan {
+ id String @id @default(uuid())
+ borrowerProfileId String
+ borrower BorrowerProfile @relation(fields:[borrowerProfileId],references:[id],onDelete:Restrict)
+ principal Decimal @db.Decimal(18,2)
+ rate Decimal @db.Decimal(12,6)
+ interestMethod String
+ startDate DateTime @db.Date
+ dueDate DateTime @db.Date
+ originalInterest Decimal @db.Decimal(18,2)
+ status String @default("ACTIVE")
+ createdAt DateTime @default(now())
+ performedBy String
+ idempotencyKey String @unique
+ requestHash String
+ movements PoolTransaction[]
+ payments Payment[]
+ adjustments InterestAdjustment[]
+ settlements SettlementOperation[]
+}
+model Borrowing {
+ id String @id @default(uuid())
+ lenderProfileId String
+ lender LenderProfile @relation(fields:[lenderProfileId],references:[id],onDelete:Restrict)
+ principal Decimal @db.Decimal(18,2)
+ rate Decimal @db.Decimal(12,6)
+ interestMethod String
+ originalInterest Decimal @db.Decimal(18,2)
+ startDate DateTime @db.Date
+ dueDate DateTime @db.Date
+ status String @default("ACTIVE")
+ createdAt DateTime @default(now())
+ performedBy String
+ idempotencyKey String @unique
+ requestHash String
+ movements PoolTransaction[]
+ payments Payment[]
+ adjustments InterestAdjustment[]
+ settlements SettlementOperation[]
+}
+model EquityEntry {
+ id String @id @default(uuid())
+ amount Decimal @db.Decimal(18,2)
+ type String
+ transactionDate DateTime @db.Date
+ performedBy String
+ reason String
+ idempotencyKey String @unique
+ requestHash String
+ createdAt DateTime @default(now())
+ movements PoolTransaction[]
+}
+model Payment {
+ id String @id @default(uuid())
+ loanId String?
+ borrowingId String?
+ loan Loan? @relation(fields:[loanId],references:[id],onDelete:Restrict)
+ borrowing Borrowing? @relation(fields:[borrowingId],references:[id],onDelete:Restrict)
+ amount Decimal @db.Decimal(18,2)
+ fees Decimal @db.Decimal(18,2)
+ interest Decimal @db.Decimal(18,2)
+ principal Decimal @db.Decimal(18,2)
+ transactionDate DateTime @db.Date
+ reference String?
+ performedBy String
+ createdAt DateTime @default(now())
+ idempotencyKey String @unique
+ requestHash String
+ movements PoolTransaction[]
+ reversal PaymentReversal?
+}
+model InterestAdjustment {
+ id String @id @default(uuid())
+ loanId String?
+ borrowingId String?
+ loan Loan? @relation(fields:[loanId],references:[id],onDelete:Restrict)
+ borrowing Borrowing? @relation(fields:[borrowingId],references:[id],onDelete:Restrict)
+ amount Decimal @db.Decimal(18,2)
+ reason String
+ performedBy String
+ createdAt DateTime @default(now())
+}
+model PoolTransaction {
+ id String @id @default(uuid())
+ direction String
+ type String
+ amount Decimal @db.Decimal(18,2)
+ transactionDate DateTime @db.Date
+ loanId String?
+ borrowingId String?
+ equityEntryId String?
+ paymentId String?
+ paymentReversalId String? @unique
+ loan Loan? @relation(fields:[loanId],references:[id],onDelete:Restrict)
+ borrowing Borrowing? @relation(fields:[borrowingId],references:[id],onDelete:Restrict)
+ equityEntry EquityEntry? @relation(fields:[equityEntryId],references:[id],onDelete:Restrict)
+ payment Payment? @relation(fields:[paymentId],references:[id],onDelete:Restrict)
+ paymentReversal PaymentReversal? @relation(fields:[paymentReversalId],references:[id],onDelete:Restrict)
+ reference String?
+ performedBy String
+ createdAt DateTime @default(now())
+ @@index([transactionDate,createdAt])
+ @@index([reference])
+}
+model PaymentReversal {
+ id String @id @default(uuid())
+ paymentId String @unique
+ payment Payment @relation(fields:[paymentId],references:[id],onDelete:Restrict)
+ reversalDate DateTime @db.Date
+ reason String
+ performedBy String
+ idempotencyKey String @unique
+ requestHash String
+ createdAt DateTime @default(now())
+ movement PoolTransaction?
+}
+model AuditLog {
+ id String @id @default(uuid())
+ action String
+ entityId String
+ performedBy String
+ payload Json
+ createdAt DateTime @default(now())
+ @@index([entityId])
+}
+
+model PersonOperation {
+ idempotencyKey String @id
+ requestHash String
+ personId String
+ person Person @relation(fields:[personId],references:[id],onDelete:Restrict)
+ createdAt DateTime @default(now())
+}
+model SettlementOperation {
+ idempotencyKey String @id
+ requestHash String
+ loanId String?
+ borrowingId String?
+ loan Loan? @relation(fields:[loanId],references:[id],onDelete:Restrict)
+ borrowing Borrowing? @relation(fields:[borrowingId],references:[id],onDelete:Restrict)
+ adjustmentId String?
+ paymentId String?
+ adjustmentDelta Decimal @db.Decimal(18,2)
+ payoffAmount Decimal @db.Decimal(18,2)
+ finalTotalInterest Decimal @db.Decimal(18,2)
+ settlementDate DateTime @db.Date
+ performedBy String
+ createdAt DateTime @default(now())
+}
+
+model SignInRateLimit {
+ ip String @id
+ failedAttempts Int @default(0)
+ windowStart DateTime @default(now())
+ updatedAt DateTime @updatedAt
+}
+

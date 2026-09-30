@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lending
+      POSTGRES_PASSWORD: local_password
+      POSTGRES_DB: lending
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - lending_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lending -d lending"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+volumes:
+  lending_pg:

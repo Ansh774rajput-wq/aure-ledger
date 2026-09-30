@@ -1,0 +1,57 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> lending@1.0.0 test:e2e
+> playwright test
+
+[WebServer] (node:32) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+[WebServer] Loaded Prisma config from prisma.config.ts.
+[WebServer] 
+[WebServer] Prisma schema loaded from prisma/schema.prisma.
+[WebServer] (node:69) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:69) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:92) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:133) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:136) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:134) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:143) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:153) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:154) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:141) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:249) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+[WebServer] (node:262) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 2 workers
+
+(node:283) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:282) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [desktop] › tests/browser/ledger.spec.ts:3:1 › sample balances, read-only actions and mobile fit (698ms)
+  ✓   1 [mobile] › tests/browser/ledger.spec.ts:3:1 › sample balances, read-only actions and mobile fit (1.1s)
+  ✓   3 [desktop] › tests/browser/ledger.spec.ts:9:1 › loan search, detail and overdue filter (1.0s)
+  ✓   4 [mobile] › tests/browser/ledger.spec.ts:9:1 › loan search, detail and overdue filter (823ms)
+  ✓   5 [desktop] › tests/browser/ledger.spec.ts:12:1 › creator signature and truthful feature scope (515ms)
+  ✓   6 [mobile] › tests/browser/ledger.spec.ts:12:1 › creator signature and truthful feature scope (520ms)
+  ✓   7 [desktop] › tests/browser/ledger.spec.ts:15:1 › private API rejects unsigned access (458ms)
+  ✓   8 [mobile] › tests/browser/ledger.spec.ts:15:1 › private API rejects unsigned access (351ms)
+  ✓  10 [mobile] › tests/browser/ledger.spec.ts:16:1 › loan form quotes interest and sends an explicit disbursement command (mocked API) (857ms)
+  ✓   9 [desktop] › tests/browser/ledger.spec.ts:16:1 › loan form quotes interest and sends an explicit disbursement command (mocked API) (1.1s)
+  ✓  11 [mobile] › tests/browser/ledger.spec.ts:24:1 › an unconfirmed capital submission retries its original key and payload (mocked API) (927ms)
+  ✓  12 [desktop] › tests/browser/ledger.spec.ts:24:1 › an unconfirmed capital submission retries its original key and payload (mocked API) (1.1s)
+
+  12 passed (13.7s)

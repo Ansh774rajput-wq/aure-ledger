@@ -1,0 +1,14 @@
+# Decisions
+
+1. **Keep PostgreSQL and Prisma.** Missing database availability is a blocker, not permission to substitute a mock database. Schema/client generation is distinct from a migration actually applied to PostgreSQL.
+2. **Single ledger / owner.** One password-protected workspace. Authenticated APIs assign the actor. Multi-user authorization and tenancy are not claimed.
+3. **Transactional audit, no outbox.** Audit writing occurs inside the financial transaction. An audit failure rolls back all writes. This avoids a committed operation being incorrectly reported as failed due to a later best-effort audit call. Idempotency keys address ambiguous commit responses. Real behavior must still pass integration tests.
+4. **Serialize cash writes.** PostgreSQL advisory transaction lock 67421901 governs all implemented cash writers. Balance is derived after the lock; concurrent attempts cannot both spend the same pool through these code paths. Empirical concurrent behavior is unverified until the real test runs.
+5. **Whole rupees for official postings.** Although the Money helper preserves paisa, this initial UI/API only posts integer rupees, matching the required official allocation convention. No silent input rounding of principal. Documented conservative scope restriction.
+6. **Chronological cash.** Block cash postings earlier than the latest effective cash date and future cash. This avoids reconstructing historical funding incorrectly. Backdated reconciliation/reversal is a separate slice.
+7. **Simple interest, explicit methods.** Annual Actual/365 and anchored monthly, both non-compounding. No reducing-balance method or implied equivalence.
+8. **Immutable contracts in phase one.** SQL rejects financial UPDATE/DELETE. Future status and early-close posting need reviewed state-transition SQL with immutable agreement fields, associated adjustment history, and tests. Do not disable protection globally to make closure work.
+9. **Read-only samples.** Sample data is isolated from the database and sample action buttons explain that nothing is saved. No localStorage financial persistence.
+10. **Source delivery, no deployment.** Standard Next.js source matches the required database architecture. No working public hosted ledger or provisioned PostgreSQL is claimed.
+11. **UI primitives.** Native forms/selects/dialog provide semantic controls; a custom navy/green theme avoids a generic default admin kit. Tailwind is available. shadcn/ui was a preference, not a required dependency; it is not installed.
+12. **Transient response handling.** On a financial 5xx/network error the UI freezes the payload and reuses its idempotency key. Definitive validation errors permit editing with a fresh key. Keys currently survive retries within the open form, not a full browser reload; after a reload, reconcile records before resubmitting.
